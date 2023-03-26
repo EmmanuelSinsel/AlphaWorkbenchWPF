@@ -1,0 +1,768 @@
+﻿<Window x:Class="AlphaWorkbenchWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AlphaWorkbenchWPF"
+        mc:Ignorable="d"
+        Title="Alpha Workbench" Height="900" Width="1600" WindowStartupLocation="CenterScreen" WindowState="Normal"
+        FontFamily="Lato" WindowStyle="None" ResizeMode="CanResize" AllowsTransparency="False">
+    <Window.Resources>
+        <Style x:Name="Dark" BasedOn="{StaticResource {x:Type ListBox}}"
+           TargetType="ListBox"
+           x:Key="DarkTheme">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style x:Name="Light" BasedOn="{StaticResource {x:Type TextBlock}}"
+           TargetType="TextBlock"
+           x:Key="LightTheme">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="Image">
+            <Setter Property="Height" Value="64" />
+            <Setter Property="Width" Value="64" />
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+        </Style>
+
+    </Window.Resources>
+    <Grid Name="mainGrid" Background="#FF5D5D5D">
+        <StackPanel Name="panelmain" Margin="278,57,0,0" Orientation="Horizontal" HorizontalAlignment="Stretch">
+            <StackPanel Name="spacer" Width="0" HorizontalAlignment="Left"></StackPanel>
+            <StackPanel Orientation="Vertical" Width="1000" HorizontalAlignment="Center" Margin="50,50,0,0">
+                <StackPanel Name="pageMenu" Visibility="Collapsed" HorizontalAlignment="Center" >
+                    <TextBlock Name="txtMenuTittle" Foreground="White" FontSize="50" Text="Bienvenido!" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" Width="850" Margin="0,50,0,0">
+                        <StackPanel Width="400" Margin="0,0,25,0">
+                            <TextBlock Foreground="White" FontSize="20"> Actividades completadas:</TextBlock>
+                            <TextBlock Name="menuCompletedPercent" Foreground="White" FontSize="80" HorizontalAlignment="Center"> 0%</TextBlock>
+                            <TextBlock Name="menuCompletedCount" Foreground="White" FontSize="80" HorizontalAlignment="Center"> 0</TextBlock>
+                        </StackPanel>
+                        <StackPanel Width="400" Margin="25,0,0,0">
+                            <TextBlock Foreground="White" FontSize="20"> Actividades pendientes:</TextBlock>
+                            <TextBlock Name="menuUncompletedPercent" Foreground="White" FontSize="80" HorizontalAlignment="Center"> 100%</TextBlock>
+                            <TextBlock Name="menuUncompletedCount" Foreground="White" FontSize="80" HorizontalAlignment="Center"> 10</TextBlock>
+                        </StackPanel>
+
+                    </StackPanel>
+                    <TextBlock Margin="0,50,0,0" Foreground="White" FontSize="20" HorizontalAlignment="Center">Actividades:</TextBlock>
+                    <ListBox Name="pendantActivites" Height="300" Background="Transparent" BorderBrush="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Ellipse Width="40" Height="40" Margin="10,10,0,10" RenderOptions.BitmapScalingMode="HighQuality">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource='{Binding photo}'></ImageBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                                        <TextBlock Text="{Binding project}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"></TextBlock>
+                                        <TextBlock Text="{Binding name}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <StackPanel Name="pageMain" Visibility="Collapsed" HorizontalAlignment="Center" >
+                    <TextBlock Name="txtMainTittle" Foreground="White" FontSize="50" Text="Project Name" HorizontalAlignment="Center"/>
+                    <TextBlock Name="txtMainDesc" Margin="0,50,0,0" Width="800" Height="300" Foreground="White" TextWrapping="Wrap"  FontSize="20" Text="Project Desc" TextAlignment="Justify" HorizontalAlignment="Center"/>
+                    <TextBlock Name="pendantActivitiesEach" Foreground="White" FontSize="20">Actividades Pendientes:</TextBlock>
+                    <ListBox Name="pendantActivitesListEach" Height="200" Background="Transparent" BorderBrush="Transparent">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Ellipse Width="40" Height="40" Margin="10,10,0,10" RenderOptions.BitmapScalingMode="HighQuality">
+                                        <Ellipse.Fill>
+                                            <ImageBrush ImageSource='{Binding photo}'></ImageBrush>
+                                        </Ellipse.Fill>
+                                    </Ellipse>
+                                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                                        <TextBlock Text="{Binding project}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"></TextBlock>
+                                        <TextBlock Text="{Binding name}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"></TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Name="btnEditProject" Margin="20,10,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnUpdateProject_MouseDown" >
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Editar Proyecto</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Name="pageMembers" Visibility="Collapsed" HorizontalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Left" Width="800" Orientation="Horizontal">
+                        <Ellipse Width="250" Height="250" Margin="50,0,0,0" HorizontalAlignment="Left" RenderOptions.BitmapScalingMode="HighQuality">
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="memberProfilePhoto" ImageSource='{Binding photo}'></ImageBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <StackPanel>
+                            <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Usuario:</TextBlock>
+                            <TextBlock Name="lblNombreUsuarioMiembro" Foreground="White" FontSize="20" Margin="50,0,0,0">Username</TextBlock>
+                            <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Nombre:</TextBlock>
+                            <TextBlock Name="lblNombreMiembro" Foreground="White" FontSize="20" Margin="50,0,0,0">Nombre</TextBlock>
+                            <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Correo:</TextBlock>
+                            <TextBlock Name="lblCorreoMiembro" Foreground="White" FontSize="20" Margin="50,0,0,0">Correo</TextBlock>
+                            <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Telefono:</TextBlock>
+                            <TextBlock Name="lblTelefonoMiembro" Foreground="White" FontSize="20" Margin="50,0,0,0">Telefono</TextBlock>
+                        </StackPanel>
+                        <StackPanel Name="btnUpdateUser" Margin="50,20,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnUpdateUser_MouseDown" >
+                            <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Editar Miembro</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Name="adminMemberView" Margin="0,50,0,0" Visibility="Visible">
+                        <StackPanel Orientation="Horizontal" Width="850" Margin="0,20,0,0">
+                            <StackPanel Width="400" Margin="0,0,25,0">
+                                <TextBlock Foreground="White" FontSize="20"> Actividades completadas:</TextBlock>
+                                <TextBlock Name="memberCompletedPercent" Foreground="White" FontSize="50" HorizontalAlignment="Center"> 0%</TextBlock>
+                                <TextBlock Name="memberCompletedCount" Foreground="White" FontSize="50" HorizontalAlignment="Center"> 0</TextBlock>
+                            </StackPanel>
+                            <StackPanel Width="400" Margin="25,0,0,0">
+                                <TextBlock Foreground="White" FontSize="20"> Actividades pendientes:</TextBlock>
+                                <TextBlock Name="memberUncompletedPercent" Foreground="White" FontSize="50" HorizontalAlignment="Center"> 100%</TextBlock>
+                                <TextBlock Name="memberUncompletedCount" Foreground="White" FontSize="50" HorizontalAlignment="Center"> 10</TextBlock>
+                            </StackPanel>
+                            
+                        </StackPanel>
+                        <TextBlock Foreground="White" FontSize="20" Margin="50,10,0,0">Actividades del usuario:</TextBlock>
+                        <ListBox Name="pendantActivitesListMember" Height="200" Background="Transparent" BorderBrush="Transparent">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Ellipse Width="40" Height="40" Margin="10,10,0,10" RenderOptions.BitmapScalingMode="HighQuality">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource='{Binding photo}'></ImageBrush>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                                            <TextBlock Text="{Binding project}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"></TextBlock>
+                                            <TextBlock Text="{Binding name}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="White"></TextBlock>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel Name="btnUpdate" Margin="0,20,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnUpdate_MouseDown" >
+                                <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Editar Actividad</TextBlock>
+                            </StackPanel>
+                            <StackPanel Name="btnDownload" Margin="20,20,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnDownload_MouseDown" >
+                                <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Descargar Archivo</TextBlock>
+                            </StackPanel>
+                            <StackPanel Name="btnAccept" Margin="20,20,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnAccept_MouseDown"  >
+                                <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Aceptar Actividad</TextBlock>
+                            </StackPanel>
+                            <StackPanel Name="btndeny" Margin="20,20,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btndeny_MouseDown" >
+                                <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Rechazar Actividad</TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                </StackPanel>
+                <StackPanel Name="pageActivities" Visibility="Collapsed" HorizontalAlignment="Center">
+                    <TextBlock Name="txtActivityTittle" Foreground="White" FontSize="50" Text="Activity Name" HorizontalAlignment="Center"/>
+                    <TextBlock Name="txtActivityDesc" Margin="0,50,0,0" Width="800" Height="450" Foreground="White" TextWrapping="Wrap"  FontSize="20" Text="Activity Desc" TextAlignment="Justify" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Foreground="White" FontSize="20">Estado de la actividad:</TextBlock>
+                        <TextBlock Name="activityState" Margin="20,0,0,0" Foreground="White" FontSize="20"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Name="btnUploadActivity" Margin="0,20,0,0" Height="50" Width="200" HorizontalAlignment="Center" Background="#FF424242" MouseDown="btnUploadActivity_MouseDown">
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Elegir Archivo</TextBlock>
+                    </StackPanel>
+                    <StackPanel Name="btnUpload" Margin="0,20,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnUpload_MouseDown">
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Subir Actividad</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Name="pageChats" Visibility="Hidden" HorizontalAlignment="center">
+                    <TextBlock Text="texto chats"/>
+                </StackPanel>
+            </StackPanel>
+            
+        </StackPanel>
+        <DockPanel Name="topBar" LastChildFill="True" Background="Black" VerticalAlignment="Top" Height="57" MouseMove="topBar_MouseMove">
+
+            <Image Name="imgAW" Height="15" HorizontalAlignment="Left" Margin="15,0,0,0"></Image>
+            <TextBlock Name="contextTitle" Text="Context" Foreground="White" VerticalAlignment="Center" FontSize="20" Margin="225,0,0,0"></TextBlock>
+            <TextBox VerticalAlignment="Center" Visibility="Hidden" HorizontalAlignment="Center" Width="300" Height="30" Background="Gray" Text="Buscar" TextAlignment="Center" FontSize="20">
+            </TextBox>
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                <Image Name="Minimize_app" Source="Resources/minimize.png" Height="15" Margin="0,0,0,0" MouseLeftButtonDown="Minimize_app_MouseDown" MouseEnter="Minimize_app_MouseEnter" MouseLeave="Minimize_app_MouseLeave"/>
+                <Image Name="Maximize_app" Source="Resources/maximize.png" Height="20" Margin="-20,0,0,0" MouseLeftButtonDown="Maximize_app_MouseDown" MouseEnter="Maximize_app_MouseEnter" MouseLeave="Maximize_app_MouseLeave"/>
+                <Image Name="Close_app" Source="Resources/close.png" Height="20" Margin="-20,0,-10,0" MouseLeftButtonDown="Close_app_MouseDown" MouseEnter="Close_app_MouseEnter" MouseLeave="Close_app_MouseLeave"/>
+            </StackPanel>
+
+        </DockPanel>
+        <Grid Name="lateralBar" HorizontalAlignment="Left" Width="63" Background="#FF404040" Margin="0,57,0,0">
+            <!--Image Name="imgTheme" VerticalAlignment="Top" HorizontalAlignment="Center" Height="40" Margin="0,10,0,0" MouseDown="Image_MouseDown"></Image!-->
+            <Ellipse Name="imgUser" Width="55" Height="55" Margin="0,0,0,5" HorizontalAlignment="Center" VerticalAlignment="Bottom" MouseDown="imgUser_MouseDown">
+                <Ellipse.Fill>
+                    <ImageBrush x:Name="imgUserSource" ImageSource='{Binding image}'></ImageBrush>
+                </Ellipse.Fill>
+            </Ellipse>
+        </Grid>
+        <ListBox Name = 'exListBox' Margin="63,57,0,0" Background="#FF5D5D5D" HorizontalAlignment="Left" Width="212" BorderBrush="#FF5D5D5D" ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="exListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="60" Height="60" Margin="2,5,0,5">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource='{Binding image}'></ImageBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                        <StackPanel Orientation="Vertical" Margin="10,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding name}" ></TextBlock>
+                            <TextBlock Text="{Binding charge}" ></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox Name="exTopbar" VerticalAlignment="Top" Height="60" Margin="275,57,0,0" Background="#FF404040" HorizontalAlignment="Left" Width="217" BorderBrush="#FF404040">
+            <StackPanel Orientation="Horizontal" Height="51">
+                <Image Name="imgHome" Source="Resources\arrow_dark.png" Height="20" Margin="-10,0,0,0" MouseDown="Image_MouseDown_1"></Image>
+                <Viewbox Stretch="Uniform" Width="142">
+                    <TextBlock Name="txtTitle" Text="-" VerticalAlignment="Center" Margin="10,0,0,0" FontFamily="lato" FontSize="20"></TextBlock>
+
+                </Viewbox>
+            </StackPanel>
+        </ListBox>
+        <ListBox Name="exProject"  Margin="275,117,0,0" Background="#FF404040" HorizontalAlignment="Left" Width="217" BorderBrush="#FF404040" SelectionChanged="exProject_SelectionChanged" MouseLeftButtonDown="exProject_MouseLeftButtonDown" MouseDown="exProject_MouseDown">
+            <StackPanel Name="panelMain" Width="204" Orientation="Vertical" HorizontalAlignment="Left">
+                <StackPanel Orientation="Horizontal" Height="60">
+                    <Image Name="imgMain" Source="Resources\home_dark.png" Margin="-10,0,0,0" VerticalAlignment="Center" Height="15"></Image>
+                    <TextBlock Name="txtMain"  Text="{Binding menu}" Margin="10,0,0,0" Height="20" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Name="panelMember" Width="204" Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Height="60">
+                    <Image Name="imgMembers"  Source="Resources\members_dark.png" Margin="-10,0,0,0" VerticalAlignment="Center" Height="15"  RenderTransformOrigin="0.5,0.5" />
+                    <TextBlock Name="txtMember" Text="{Binding menu}" Margin="10,0,0,0" Height="20" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+                <ListBox Name="exDataMembers" Width="204" Height="0" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="exDataMembers_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Ellipse Width="40" Height="40" Margin="10,10,0,10" RenderOptions.BitmapScalingMode="HighQuality">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource='{Binding profile_photo}'></ImageBrush>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                                    <TextBlock Text="{Binding name}" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                                    <TextBlock Text="{Binding charge}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{Binding font_color}"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            <StackPanel Name="panelActivities" Width="204" Orientation="Vertical" HorizontalAlignment="Left" >
+                <StackPanel Orientation="Horizontal" Height="60">
+                    <Image Name="imgActivities" Source="Resources\activities_dark.png" Margin="-10,0,0,0" VerticalAlignment="Center" Height="20" />
+                    <TextBlock Name="txtActivites" Text="{Binding menu}" Margin="10,0,0,0" Height="20" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+                <ListBox Name="exDataActivities" Width="204" Height="0" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="exDataActivities_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Height="60">
+                                <Rectangle Width="20" Height="20" Margin="20,10,10,10" RenderOptions.BitmapScalingMode="HighQuality">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource='{Binding icon}'></ImageBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding name}" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                                    <TextBlock Text="{Binding desc}" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{Binding font_color}"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            <StackPanel Name="panelChats" Width="204" Orientation="Vertical" HorizontalAlignment="Left" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal" Height="60">
+                    <Image Name="imgChats" Source="Resources\chats_dark.png" Margin="-8,0,0,0" VerticalAlignment="Center" Height="15" Width="60"/>
+                    <TextBlock Name="txtChats" Text="{Binding menu}" Margin="12,0,0,0" Height="20" VerticalAlignment="Center"></TextBlock>
+                </StackPanel>
+                <ListBox Name="exDataChats" Width="204" Height="0" Background="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="exDataChats_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Height="60">
+                                <Rectangle Width="20" Height="20" Margin="20,10,10,10" RenderOptions.BitmapScalingMode="HighQuality">
+                                    <Rectangle.Fill>
+                                        <ImageBrush ImageSource='{Binding icon}' RenderOptions.BitmapScalingMode='HighQuality'></ImageBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center" >
+                                    <TextBlock Text="{Binding name}" VerticalAlignment="Center" Margin="10,0,0,0"></TextBlock>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </ListBox>
+
+        <Grid Name="addProject" Margin="0,56,0,0" Background="#99000000" Visibility="Hidden">
+
+            <StackPanel Name="addProjectSP" Background="#FF5D5D5D" Width="1200" Height="650">
+                <Image Name="closeCreateProject" Source="Resources/close.png" Height="20" HorizontalAlignment="Right" Margin="0,10,10,-10" Width="20" MouseEnter="closeCreateProject_MouseEnter" MouseLeave="closeCreateProject_MouseLeave" MouseDown="closeCreateProject_MouseDown"/>
+                <StackPanel Width="80" Margin="0,30,0,0">
+                    <Ellipse Name="projectImageBuscar"  Width="80" Height="80" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" MouseDown="projectImageBuscar_MouseDown">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="projectImageBuscarBrush" ImageSource='{Binding XD}' ></ImageBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </StackPanel>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Nombre del Proyecto:</TextBlock>
+                <TextBox Name="txtAddProjectName" Margin="0,10,0,0" Height="30" Width="500" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Descripcion:</TextBlock>
+                <RichTextBox Name="txtAddProjectDesc" Margin="0,10,0,0" Height="150" Width="800" HorizontalAlignment="Center" FontSize="20"></RichTextBox>
+                <StackPanel Name="btnCreateProject" Margin="0,50,0,0" Height="50" Width="200" Background="#FF424242" MouseEnter="btnCreateProject_MouseEnter" MouseLeave="btnCreateProject_MouseLeave" MouseDown="btnCreateProject_MouseDown">
+                    <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Crear Proyecto</TextBlock>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+        <Grid Name="updateProject" Margin="0,56,0,0" Background="#99000000" Visibility="Hidden">
+
+            <StackPanel Name="updateProjectSP" Background="#FF5D5D5D" Width="1200" Height="650">
+                <Image Name="closeUpdateProject" Source="Resources/close.png" Height="20" HorizontalAlignment="Right" Margin="0,10,10,-10" Width="20" MouseDown="closeUpdateProject_MouseDown" />
+                <StackPanel Width="80" Margin="0,30,0,0">
+                    <Ellipse Name="projectImageUpdate"  Width="80" Height="80" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill" RenderOptions.BitmapScalingMode="HighQuality" MouseDown="projectImageUpdate_MouseDown">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="projectImageUpdateBrush" ImageSource='{Binding XD}' ></ImageBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </StackPanel>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Nombre del Proyecto:</TextBlock>
+                <TextBox Name="txtUpdateProjectName" Margin="0,10,0,0" Height="30" Width="500" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Descripcion:</TextBlock>
+                <RichTextBox Name="txtUpdateProjectDesc" Margin="0,10,0,0" Height="150" Width="800" HorizontalAlignment="Center" FontSize="20"></RichTextBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel Name="btnUpdateProject" Margin="0,50,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnUpdateProject_MouseDown_1" >
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Editar Proyecto</TextBlock>
+                    </StackPanel>
+                    <StackPanel Name="btnDeleteProject" Margin="20,50,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnDeleteProject_MouseDown">
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Eliminar Proyecto</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+
+            </StackPanel>
+        </Grid>
+        <Grid Name="addActivity" Margin="0,56,0,0" Background="#99000000" Visibility="Hidden">
+            <StackPanel Name="addActivitySP" Background="#FF5D5D5D" Width="1200" Height="650">
+                <Image Name="closeCreateActivity" Source="Resources/close.png" Height="20" HorizontalAlignment="Right" Margin="0,10,10,-10" Width="20" MouseDown="closeCreateActivity_MouseDown" />
+                <StackPanel Width="80" Margin="0,30,0,0">
+                </StackPanel>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Nombre de la Actividad:</TextBlock>
+                <TextBox Name="txtAddActivityName" Margin="0,10,0,0" Height="30" Width="500" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Descripcion:</TextBlock>
+                <RichTextBox Name="txtAddActivityDesc" Margin="0,10,0,0" Height="150" Width="800" HorizontalAlignment="Center" FontSize="20"></RichTextBox>
+                <TextBlock Margin="0,30,0,0" Foreground="White" FontSize="20" HorizontalAlignment="Center">Miembro a asignar:</TextBlock>
+                <ComboBox Name="cbAddMember_Activity" Margin="0,10,0,0" Width="500" Foreground="Black" FontSize="20"></ComboBox>
+                <StackPanel Name="btnCreateActivity" Margin="0,50,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnCreateActivity_MouseDown"  >
+                    <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Crear Actividad</TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Name="updateActivity" Margin="0,56,0,0" Background="#99000000" Visibility="Hidden">
+            <StackPanel Name="updateActivitySP" Background="#FF5D5D5D" Width="1200" Height="650">
+                <Image Name="closeupdateCreateActivity" Source="Resources/close.png" Height="20" HorizontalAlignment="Right" Margin="0,10,10,-10" Width="20" MouseDown="closeupdateCreateActivity_MouseDown"/>
+                <StackPanel Width="80" Margin="0,30,0,0">
+                </StackPanel>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Nombre de la Actividad:</TextBlock>
+                <TextBox Name="txtupdateActivityName" Margin="0,10,0,0" Height="30" Width="500" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                <TextBlock Margin="0,50,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Descripcion:</TextBlock>
+                <RichTextBox Name="txtupdateActivityDesc" Margin="0,10,0,0" Height="150" Width="800" HorizontalAlignment="Center" FontSize="20"></RichTextBox>
+                <TextBlock Margin="0,30,0,0" Foreground="White" FontSize="20" HorizontalAlignment="Center">Miembro a asignar:</TextBlock>
+                <ComboBox Name="cbupdateMember_Activity" Margin="0,10,0,0" Width="500" Foreground="Black" FontSize="20"></ComboBox>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel Name="btUpdateActivity" Margin="0,50,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btUpdateActivity_MouseDown" >
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Actualizar Actividad</TextBlock>
+                    </StackPanel>
+                    <StackPanel Name="btDeleteActivity" Margin="20,50,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btDeleteActivity_MouseDown" >
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Eliminar Actividad</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+
+            </StackPanel>
+        </Grid>
+        <Grid Name="addProjectAdminRole" Margin="0,56,0,0" Background="#99000000" Visibility="Hidden">
+            <StackPanel Orientation="Horizontal" Background="#FF5D5D5D" Width="500" Height="500">
+                <StackPanel Width="500" HorizontalAlignment="Center">
+                    <TextBlock Foreground="White" FontSize="20" HorizontalAlignment="Center" Margin="0,50,0,0"> Informacion del miembro administrador</TextBlock>
+                    <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Cargo:</TextBlock>
+                    <TextBox Name="txtPositionAdmin" Margin="0,10,0,0" Height="30" Width="400" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                    <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Color:</TextBlock>
+                    <StackPanel Width="400">
+                        <StackPanel Orientation="Horizontal">
+
+                            <ListBox Name="adminColorPicker" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="{x:Null}" Width="400">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel IsItemsHost="True" HorizontalAlignment="Center"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBoxItem >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#efd31a" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem  >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#f4ae1a" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#f36b28" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem  >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#ef4924" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#ee2f44" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem  >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#ec468b" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem  >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#b856a1" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#915ba6" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem  >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#518bc9" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#27beb6" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem  >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#67bf6b" ></Rectangle>
+                                </ListBoxItem>
+                                <ListBoxItem  >
+                                    <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#a1cd49" ></Rectangle>
+                                </ListBoxItem>
+                            </ListBox>
+                        </StackPanel>
+
+                    </StackPanel>
+                    <StackPanel Name="btnAddMemberAdmin" Margin="0,50,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnAddMemberAdmin_MouseDown">
+                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Añadir Usuario</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Name="addMember" Margin="0,56,0,0" Background="#99000000" Visibility="Hidden">
+            <StackPanel Name="addMemberSP" Background="#FF5D5D5D" Width="1200" Height="650" VerticalAlignment="Center">
+                <Image Name="closeAddMember" Source="Resources/close.png" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,-10" Width="20" MouseDown="closeAddMember_MouseDown"/>
+                <StackPanel VerticalAlignment="Center">
+                    <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+                        <TextBlock Margin="0,20,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Correo de Usuario:</TextBlock>
+                        <TextBox Name="txtBuscarUsuario" Margin="0,10,0,0" Height="30" Width="500" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                        <StackPanel Name="btnBuscarUsuario" Margin="0,30,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnBuscarUsuario_MouseDown" >
+                            <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Buscar Usuario</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Height="500" VerticalAlignment="Center" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Height="370">
+                            <StackPanel Width="500" Margin="50,0,50,0">
+                                <Ellipse Name="userImageBuscar" Width="80" Height="80" HorizontalAlignment="Left" Margin="50,30,0,0" RenderOptions.BitmapScalingMode="HighQuality" MouseDown="addUserImage_MouseDown">
+                                    <Ellipse.Fill>
+                                        <ImageBrush x:Name="userImageBuscarBrush" ImageSource='{Binding profile_photo}'></ImageBrush>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Usuario:</TextBlock>
+                                <TextBlock Name="lblBuscarNombreUsuarioUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Username</TextBlock>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Nombre:</TextBlock>
+                                <TextBlock Name="lblBuscarNombreUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Nombre</TextBlock>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Correo:</TextBlock>
+                                <TextBlock Name="lblBuscarCorreoUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Correo</TextBlock>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Telefono:</TextBlock>
+                                <TextBlock Name="lblBuscarTelefonoUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Telefono</TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="50,0,0,0" Width="500">
+                                <TextBlock Foreground="White" FontSize="20" HorizontalAlignment="Center" Margin="0,50,0,0"> Informacion del nuevo Miembro</TextBlock>
+                                <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Cargo:</TextBlock>
+                                <TextBox Name="txtPosition" Margin="0,10,0,0" Height="30" Width="400" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                                <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Color:</TextBlock>
+                                <StackPanel Width="400">
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <ListBox Name="positionColor" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="{x:Null}" Width="400">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel IsItemsHost="True" HorizontalAlignment="Center"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#efd31a" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#f4ae1a" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#f36b28" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#ef4924" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#ee2f44" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#ec468b" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#b856a1" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#915ba6" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#518bc9" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#27beb6" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#67bf6b" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#a1cd49" ></Rectangle>
+                                            </ListBoxItem>
+                                        </ListBox>
+                                    </StackPanel>
+                                    <CheckBox Name="cbAdmin" HorizontalAlignment="Center" Margin="0,20,0,0" Foreground="White" FontSize="20">Admin</CheckBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Name="btnAddMember" Margin="0,10,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnAddMember_MouseDown">
+                            <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Añadir Usuario</TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Name="updateMember" Margin="0,56,0,0" Background="#99000000" Visibility="Hidden">
+            <StackPanel Name="updateMemberSP" Background="#FF5D5D5D" Width="1200" Height="500" VerticalAlignment="Center">
+                <Image Name="closeupdateMember" Source="Resources/close.png" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,10,-10" Width="20" MouseDown="closeupdateMember_MouseDown"/>
+                <StackPanel VerticalAlignment="Center">
+                    <StackPanel Height="500" VerticalAlignment="Center" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Height="370">
+                            <StackPanel Width="500" Margin="50,0,50,0">
+                                <Ellipse  Width="80" Height="80" HorizontalAlignment="Left" Margin="50,30,0,0" RenderOptions.BitmapScalingMode="HighQuality" MouseDown="addUserImage_MouseDown">
+                                    <Ellipse.Fill>
+                                        <ImageBrush x:Name="userImageUpdateBrush" ImageSource='{Binding profile_photo}'></ImageBrush>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Usuario:</TextBlock>
+                                <TextBlock Name="lblUpdateNombreUsuarioUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Username</TextBlock>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Nombre:</TextBlock>
+                                <TextBlock Name="lblUpdateNombreUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Nombre</TextBlock>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Correo:</TextBlock>
+                                <TextBlock Name="lblUpdateCorreoUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Correo</TextBlock>
+                                <TextBlock Foreground="DarkGray" FontSize="20" Margin="50,10,0,0">Telefono:</TextBlock>
+                                <TextBlock Name="lblUpdateTelefonoUser" Foreground="White" FontSize="20" Margin="50,0,0,0">Telefono</TextBlock>
+                            </StackPanel>
+                            <StackPanel Margin="50,0,0,0" Width="500">
+                                <TextBlock Foreground="White" FontSize="20" HorizontalAlignment="Center" Margin="0,50,0,0"> Informacion del Miembro</TextBlock>
+                                <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Cargo:</TextBlock>
+                                <TextBox Name="txtUpdatePosition" Margin="0,10,0,0" Height="30" Width="400" HorizontalAlignment="Center" FontSize="20"></TextBox>
+                                <TextBlock Margin="0,30,0,0" HorizontalAlignment="Center" Foreground="White" FontSize="20"> Color:</TextBlock>
+                                <StackPanel Width="400">
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <ListBox Name="UpdatePositionColor" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="{x:Null}" Width="400">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel IsItemsHost="True" HorizontalAlignment="Center"/>
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#efd31a" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#f4ae1a" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#f36b28" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#ef4924" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#ee2f44" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#ec468b" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#b856a1" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#915ba6" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#518bc9" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40"  Fill="#27beb6" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#67bf6b" ></Rectangle>
+                                            </ListBoxItem>
+                                            <ListBoxItem  >
+                                                <Rectangle Margin="5,5,5,5" Width="40" Height="40" Fill="#a1cd49" ></Rectangle>
+                                            </ListBoxItem>
+                                        </ListBox>
+                                    </StackPanel>
+                                    <CheckBox Name="cbUpdateAdmin" HorizontalAlignment="Center" Margin="0,20,0,0" Foreground="White" FontSize="20">Admin</CheckBox>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <StackPanel Name="btnUpdateMember" Margin="0,10,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnUpdateMember_MouseDown" >
+                                <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Añadir Usuario</TextBlock>
+                            </StackPanel>
+                            <StackPanel Name="btnDeleteMember" Margin="20,10,0,0" Height="50" Width="200" Background="#FF424242" MouseDown="btnDeleteMember_MouseDown">
+                                <TextBlock HorizontalAlignment="Center" Foreground="White" FontSize="20" Margin="0,13,0,0">Eliminar Usuario</TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        <Grid Name="menuLogin" Visibility="Hidden" Background="#99000000" Margin="0,56,0,0">
+            <StackPanel Width="300" Height="533" Background="#FFCCCCCC" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Image Name="logoLogin" Source="Resources/aw.png" Margin="0,10,0,0" Height="100" Width="100" Stretch="UniformToFill" ></Image>
+                <Rectangle Width="250" Height="2" Fill="Black" Margin="0,0,0,0"></Rectangle>
+                <TextBlock Text="Usuario" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="200" Height="35"></TextBlock>
+                <TextBox Name="tbUser" FontSize="25" Width="200" VerticalAlignment="Center" Height="35"></TextBox>
+                <TextBlock Text="Contraseña" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="200" Height="35"></TextBlock>
+                <PasswordBox Name="tbPass" FontSize="20" Width="200" VerticalAlignment="Center" Height="35"></PasswordBox>
+                <TextBlock Text="Olvidé mi contraseña" TextAlignment="Right" Width="200" Foreground="Blue"></TextBlock>
+                <CheckBox Name="cbRemember"  HorizontalAlignment="Center" Width="200" Margin="0,5,0,0">Recordar Sesion</CheckBox>
+                <TextBlock Name="Error" Text="Usuario y/o Contraseña incorrectos" TextAlignment="Center" Margin="0,5,0,0" Foreground="Red" Visibility="Hidden"></TextBlock>
+                <Button Name="btnLogin" HorizontalAlignment="Center" Margin="0,10,0,0" FontSize="20" Width="200" Height="40" Background="#FF929292" BorderBrush="{x:Null}" Click="btnLogin_Click">Iniciar sesion</Button>
+                <Rectangle Width="250" Height="2" Fill="Black" Margin="0,30,0,0"></Rectangle>
+                <Button Name="btnRegister" HorizontalAlignment="Center" Margin="0,30,0,0" FontSize="20" Width="200" Height="40" Background="#FF929292" BorderBrush="{x:Null}" Click="btnRegister_Click">Registrarse</Button>
+            </StackPanel>
+        </Grid>
+        <Grid Name="RegisteredUserAlert" Visibility="Hidden" Background="#99000000" Margin="0,56,0,0">
+            <StackPanel Width="300" Height="400" Background="#FF5D5D5D" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Image Name="logoAlert" Source="Resources/aw.png" Margin="0,10,0,0" Height="100" Width="100" Stretch="UniformToFill" ></Image>
+                <Rectangle Width="250" Height="2" Fill="Black" Margin="0,0,0,0"></Rectangle>
+                <TextBlock Text="Usuario Registrado con exito" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,70,0,0" FontSize="20" Width="200" Height="53"></TextBlock>
+                <Button Name="btnBack" HorizontalAlignment="Center" Margin="0,70,0,0" FontSize="20" Width="200" Height="40" Background="#FF929292" BorderBrush="{x:Null}" Click="btnBack_Click">Regresar</Button>
+            </StackPanel>
+        </Grid>
+        <Grid Name="menuRegister" Visibility="Hidden" Background="#99000000" Margin="0,56,0,0">
+            <StackPanel Width="650" Height="580" Background="#FF5D5D5D" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+                <Ellipse Name="addUserImage" Width="80" Height="80" Margin="10,10,0,10" RenderOptions.BitmapScalingMode="HighQuality" MouseDown="addUserImage_MouseDown">
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="userImageNew" ImageSource='{Binding profile_photo}'></ImageBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock TextAlignment="Center" HorizontalAlignment="Center"  FontSize="20" Width="250" Height="30">Imagen de perfil</TextBlock>
+                <Rectangle Width="500" Height="2" Fill="Black" Margin="0,0,0,0"></Rectangle>
+                <StackPanel Orientation="Horizontal" Height="400">
+                    <StackPanel Width="325">
+                        <TextBlock Text="Usuario" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbRegUser" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Correo" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbRegMail" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Contraseña" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <PasswordBox Name="tbRegPass" FontSize="20" Width="250" VerticalAlignment="Center" Height="35"></PasswordBox>
+                        <TextBlock Text="Confirmar Contraseña" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <PasswordBox Name="tbRegPassConfirm" FontSize="20" Width="250" VerticalAlignment="Center" Height="35"></PasswordBox>
+                    </StackPanel>
+                    <Rectangle Width="2" Height="350" Fill="Black" Margin="0,0,0,0" VerticalAlignment="Center"></Rectangle>
+                    <StackPanel Width="325">
+                        <TextBlock Text="Nombre" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbRegName" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Apellido Paterno" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbRegAPP" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Apellido Materno" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbRegAPM" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Telefono" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbRegTel" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                    </StackPanel>
+                    
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Name="btnCreateUser" FontSize="20" Width="200" Height="40" Background="#FF929292" BorderBrush="{x:Null}" Margin="0,0,10,0" Click="btnCreateUser_Click">Registrarse</Button>
+                    <Button Name="btnCancelReg" HorizontalAlignment="Center" FontSize="20" Width="200" Height="40" Background="#FF929292" BorderBrush="{x:Null}" Click="btnCancelReg_Click">Cancelar</Button>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+        <Grid Name="menuUpdate" Visibility="Hidden" Background="#99000000" Margin="0,56,0,0">
+            <StackPanel Width="650" Height="580" Background="#FF5D5D5D" VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+                <Image Name="closeupdateUser" Source="Resources/close.png" Height="20" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,-30" Width="20" MouseDown="closeupdateUser_MouseDown"/>
+
+                <Ellipse Name="updateUserImage" Width="80" Height="80" Margin="10,10,0,10" RenderOptions.BitmapScalingMode="HighQuality" MouseDown="updateUserImage_MouseDown" >
+                    <Ellipse.Fill>
+                        <ImageBrush x:Name="userImageUpdate" ImageSource='{Binding profile_photo}'></ImageBrush>
+                    </Ellipse.Fill>
+                </Ellipse>
+                <TextBlock TextAlignment="Center" HorizontalAlignment="Center"  FontSize="20" Width="250" Height="30">Imagen de perfil</TextBlock>
+                <Rectangle Width="500" Height="2" Fill="Black" Margin="0,0,0,0"></Rectangle>
+                <StackPanel Orientation="Horizontal" Height="400">
+                    <StackPanel Width="325">
+                        <TextBlock Text="Usuario" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbUpdateUser" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Correo" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbUpdateMail" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Contraseña" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <PasswordBox Name="tbUpdatePass" FontSize="20" Width="250" VerticalAlignment="Center" Height="35"></PasswordBox>
+                        <TextBlock Text="Confirmar Contraseña" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <PasswordBox Name="tbUpdatePassConfirm" FontSize="20" Width="250" VerticalAlignment="Center" Height="35"></PasswordBox>
+                    </StackPanel>
+                    <Rectangle Width="2" Height="350" Fill="Black" Margin="0,0,0,0" VerticalAlignment="Center"></Rectangle>
+                    <StackPanel Width="325">
+                        <TextBlock Text="Nombre" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbUpdateName" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Apellido Paterno" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbUpdateAPP" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Apellido Materno" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbUpdateAPM" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                        <TextBlock Text="Telefono" TextAlignment="Left" HorizontalAlignment="Center" Margin="0,20,0,0" FontSize="20" Width="250" Height="35"></TextBlock>
+                        <TextBox Name="tbUpdateTel" FontSize="25" Width="250" VerticalAlignment="Center" Height="35"></TextBox>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Name="btnUpdUser" FontSize="20" Width="200" Height="40" Background="#FFBFBFBF" BorderBrush="{x:Null}" Margin="0,0,0,0" Click="btnUpdUser_Click" >Editar Usuario</Button>
+                    <Button Name="btnLogout" FontSize="20" Width="200" Height="40" Background="#FFBFBFBF" BorderBrush="{x:Null}" Margin="20,0,0,0" Click="btnLogout_Click">Cerrar Sesion</Button>
+                </StackPanel>
+
+            </StackPanel>
+        </Grid>
+        <Grid Name = "Config" Background="#FF5D5D5D" Visibility="Hidden" Margin="0,56,0,0">
+            <Grid Name="ConfigPanel" Width="300" Background="#FF404040" HorizontalAlignment="Left">
+                <StackPanel Orientation="Vertical">
+                    <ListBox Background="Transparent" Margin="20,5,0,50" BorderBrush="Transparent" FontFamily="verdana">
+                        <ListBoxItem Height="60">
+                            <TextBlock Name="configReturn" FontSize="20" TextAlignment="Right" Width="250" MouseDown="configReturn_MouseDown">Volver</TextBlock>
+                        </ListBoxItem>
+                        <ListBoxItem Height="60">
+                            <TextBlock Name="configGeneral" FontSize="20" TextAlignment="Right" Width="250">General</TextBlock>
+                        </ListBoxItem>
+                        <ListBoxItem Height="60">
+                            <TextBlock Name="configProfile" FontSize="20" TextAlignment="Right" Width="250">Mi Perfil</TextBlock>
+                        </ListBoxItem>
+                        <ListBoxItem Height="60">
+                            <TextBlock Name="configVisual" FontSize="20" TextAlignment="Right" Width="250">Ajustes Visuales</TextBlock>
+                        </ListBoxItem>
+                        <ListBoxItem Height="60">
+                            <TextBlock Name="configAW" FontSize="20" TextAlignment="Right" Width="250">AW+</TextBlock>
+                        </ListBoxItem>
+                        <ListBoxItem Height="60">
+                            <TextBlock Name="closeSession" FontSize="20" TextAlignment="Right" Width="250">Cerrar Sesion</TextBlock>
+                        </ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
